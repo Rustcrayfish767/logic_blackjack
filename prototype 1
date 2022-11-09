@@ -71,5 +71,5 @@ def hits():
         handview.append(hand_suit)
     hits()
     
-    
+    #just testing the waters
 main()
