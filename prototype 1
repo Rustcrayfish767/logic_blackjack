@@ -1,0 +1,75 @@
+#last updated 01:26 nov 9
+
+#too do list 
+#make a dealer
+#make a betting system
+#make the "split and double down features"
+
+#lord forgive me for what im about to code
+import random
+import math
+
+inv = [100]
+
+suits = ["of clubs", "of spades", "of dimond", "of hearts"]
+cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 1]
+cards_hand = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "kings", "queen", "jack", "ace"]
+handview = []
+
+handcount = []
+
+def main():
+    i = 1
+    while i <= 2:
+        x = random.randrange(0,13)
+        hand = cards[x]
+        handcount.append(hand)
+        hand2 = cards_hand[x]
+        handview.append(hand2)
+        y = random.randrange(0,3)
+        hand_suit = suits[y]
+        handview.append(hand_suit)
+        i += 1
+    hits()
+
+def hits():
+    total = math.fsum(handcount)  
+    if 1 in handcount and total < 21:
+        handcount.remove(1)
+        handcount.append(11)
+        total = math.fsum(handcount)  
+    if 11 in handcount and total >= 21:
+        handcount.remove(11)
+        handcount.append(1)
+        total = math.fsum(handcount)  
+        
+    #real_hand = (f"{handview[turn]}")
+        
+     
+    if total > 21:
+        print("\nyour cards are", ' '.join(handview), f'for a total of {total}')
+        print('sorry thats bust\n')
+        handview.clear()
+        handcount.clear()
+        main()  
+    if total == 21:
+        print("\nyour cards are", ' '.join(handview), f'for a total of {total}')
+        print('BlackJack!\n')
+        handview.clear()
+        handcount.clear()
+        main() 
+    print("your cards are", ' '.join(handview), f'for a total of {total}')
+    hit = input('\nwould you like to hit or stand? ')
+    if hit == "hit":
+        x = random.randrange(0,13)
+        hand = cards[x]
+        handcount.append(hand)
+        hand2 = cards_hand[x]
+        handview.append(hand2)
+        y = random.randrange(0,3)
+        hand_suit = suits[y]
+        handview.append(hand_suit)
+    hits()
+    
+    
+main()
