@@ -1,26 +1,52 @@
-#last updated 01:26 nov 9
+#last updated 23:39 nov 9
 
 #too do list 
 #make a dealer
 #make a betting system
 #make the "split and double down features"
-
+#trie to make the player stats in a file
 #lord forgive me for what im about to code
 import random
 import math
 
-inv = [100]
 
 suits = ["of clubs", "of spades", "of dimond", "of hearts"]
 cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 1]
 cards_hand = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "kings", "queen", "jack", "ace"]
+#hand view is the front end that prints out to the player only has string values
 handview = []
-
+#hand count is the backend counting that holds the int values
 handcount = []
-
+fr = open('player.txt', 'r')
 def main():
+    read_name = fr.readlines()
+    y = read_name[2]
+    if y == '\n':
+        #this was a pain in the ass but this part basicly reads from the file and if it doesnt detect a player name it creates a new profile
+        fr.close()
+        fw = open('player.txt', 'w')
+        x = input("please enter your name: ")
+        fw.write(f'{x}\nXp 0/100\nLv 1')
+        fw.close
+        f2 = open('player.txt', 'r')
+        read_name2 = f2.readlines()
+        print(read_name2)
+    
+    #if it does detect a name it just continues on
+    else:
+        print(read_name)
+    
+    
+    
+
+
+
+
+
+def handstart():
     i = 1
     while i <= 2:
+        #this part assiens the starting hand by getting a random int and matching it to the suits, cards and card hand lists 2 times
         x = random.randrange(0,13)
         hand = cards[x]
         handcount.append(hand)
@@ -34,6 +60,7 @@ def main():
 
 def hits():
     total = math.fsum(handcount)  
+    #checks to see if the total is 21 and determen if the ace should be counted as a 11 or 1
     if 1 in handcount and total < 21:
         handcount.remove(1)
         handcount.append(11)
@@ -43,22 +70,24 @@ def hits():
         handcount.append(1)
         total = math.fsum(handcount)  
         
-    #real_hand = (f"{handview[turn]}")
         
-     
+    #checks if the total is 21 or over to  see if its a bust or black jack
     if total > 21:
         print("\nyour cards are", ' '.join(handview), f'for a total of {total}')
         print('sorry thats bust\n')
         handview.clear()
         handcount.clear()
-        main()  
+        handstart()  
     if total == 21:
         print("\nyour cards are", ' '.join(handview), f'for a total of {total}')
         print('BlackJack!\n')
         handview.clear()
         handcount.clear()
-        main() 
+        handstart() 
+    
+    
     print("your cards are", ' '.join(handview), f'for a total of {total}')
+    #this askes if you want to hit and if you type hit it adds a new card then starts the funtion agine to see if over or == 21
     hit = input('\nwould you like to hit or stand? ')
     if hit == "hit":
         x = random.randrange(0,13)
@@ -71,5 +100,5 @@ def hits():
         handview.append(hand_suit)
     hits()
     
-    #just testing the waters
+    
 main()
