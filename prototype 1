@@ -17,24 +17,31 @@ cards_hand = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "kings", "queen", "j
 handview = []
 #hand count is the backend counting that holds the int values
 handcount = []
-fr = open('player.txt', 'r')
 def main():
-    read_name = fr.readlines()
-    y = read_name[2]
-    if y == '\n':
-        #this was a pain in the ass but this part basicly reads from the file and if it doesnt detect a player name it creates a new profile
-        fr.close()
-        fw = open('player.txt', 'w')
-        x = input("please enter your name: ")
-        fw.write(f'{x}\nXp 0/100\nLv 1')
-        fw.close
-        f2 = open('player.txt', 'r')
-        read_name2 = f2.readlines()
-        print(read_name2)
-    
-    #if it does detect a name it just continues on
+  file_exists = os.path.exists('player.txt')
+  if file_exists == False:
+     f = open("player.txt", "w")
+     x = input("please enter your name: ") 
+     f.write(f'{x}\n1\n0/100')
+     f.close()
+     fn = open('player.txt', 'r')
+     fnr=fn.readlines()
+     name_new = fnr[0]
+     q2 =input(f'\nhello {name_new}would you like to play\n(type y or yes)')
+     if q2 == 'y' or q == "yes":
+        handstart()
+     else:
+        main()
+ 
+  elif file_exists == True:
+    fr = open('player.txt', 'r')
+    fro = fr.readlines()
+    name = fro[0]
+    q = input(f'\nhello {name}would you to play?\n(type y or yes): ')
+    if q == 'y' or q == "yes":
+        handstart()
     else:
-        print(read_name)
+        main()
     
     
     
