@@ -1,4 +1,4 @@
-#last updated 17:17 12/11
+#last updated 18:13 nov 12
 
 #too do list 
 #make a dealer
@@ -8,6 +8,7 @@
 #lord forgive me for what im about to code
 import random
 import math
+import os.path
 
 
 suits = ["of clubs", "of spades", "of dimond", "of hearts"]
@@ -17,6 +18,11 @@ cards_hand = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "kings", "queen", "j
 handview = []
 #hand count is the backend counting that holds the int values
 handcount = []
+#dealers view that keeps data in strings
+handview_dealer = []
+#dealers hand that holds ints
+handcount_dealer = []
+
 def main():
   file_exists = os.path.exists('player.txt')
   if file_exists == False:
@@ -42,15 +48,20 @@ def main():
         handstart()
     else:
         main()
-    
-    
-    
-
-
-
-
 
 def handstart():
+    
+    for d in range(2):
+        dx = random.randrange(0,13)
+        hand_dealer = cards[dx]
+        handcount_dealer.append(hand_dealer)
+        hand2_dealer = cards_hand[dx]
+        handview.append(hand2_dealer)
+        dy = random.randrange(0,3)
+        hand_suit = suits[dy]
+        handview.append(hand_suit)
+    
+    
     i = 1
     while i <= 2:
         #this part assiens the starting hand by getting a random int and matching it to the suits, cards and card hand lists 2 times
@@ -63,9 +74,9 @@ def handstart():
         hand_suit = suits[y]
         handview.append(hand_suit)
         i += 1
-    hits()
+    action()
 
-def hits():
+def action():
     total = math.fsum(handcount)  
     #checks to see if the total is 21 and determen if the ace should be counted as a 11 or 1
     if 1 in handcount and total < 21:
@@ -105,7 +116,7 @@ def hits():
         y = random.randrange(0,3)
         hand_suit = suits[y]
         handview.append(hand_suit)
-    hits()
+    action()
     
     
 main()
