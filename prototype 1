@@ -75,18 +75,18 @@ def handstart():
         handview.append(hand_suit)
         i += 1
     switch()
-        
-  def switch():
-  print(handview)
+   
+   def switch():
+       print(handview)
   #displays cards to user
-  sw = str(input("Would you like to switch your top cards? Enter 'y' for yes and 'n' for no.))
+      sw = str(input("Would you like to switch your top cards? Enter 'y' for yes and 'n' for no.))
   #asks user if they'd like to switch cards
-  if sw = 'y':
-     x,y = y,x
-     action()
+      if sw = 'y':
+         x,y = y,x
+         action()
   #yes - switches x and y 
-  else:
-    action()
+      else:
+        action()
   #no - user continues on as normal
 
 def action():
