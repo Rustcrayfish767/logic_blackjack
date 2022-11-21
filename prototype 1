@@ -44,7 +44,7 @@ def main():
     fro = fr.readlines()
     name = fro[0]
     q = input(f'\nhello {name}would you to play?\n(type y or yes): ')
-    if q == 'y' or q == "yes":
+    if q == 'y' or q2 == "yes":
         handstart()
     else:
         main()
