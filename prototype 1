@@ -1,34 +1,206 @@
-#last updated 18:13 nov 12
+
+#last updated 12:00 nov 24
 
 #too do list 
-#make a dealer
-#make a betting system
 #make the "split and double down features"
-#trie to make the player stats in a file
 #lord forgive me for what im about to code
+
 import random
-import math
 import os.path
+import time
 
 
 suits = ["of clubs", "of spades", "of dimond", "of hearts"]
-cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 1]
-cards_hand = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "kings", "queen", "jack", "ace"]
+cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+cards_hand = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "king", "queen", "jack", "ace"]
 #hand view is the front end that prints out to the player only has string values
-handview = []
+handview1 = []
+handview2 = []
 #hand count is the backend counting that holds the int values
-handcount = []
+handcount1= []
+handcount2= []
 #dealers view that keeps data in strings
 handview_dealer = []
 #dealers hand that holds ints
 handcount_dealer = []
 
+    #debugger remove in final version
+
+debug = print("this is the debugger", handview1, handview2, handcount_dealer, '\n\n\n\n')    
+#this hits for hand 1
+def hand_1():
+    
+    
+    total1 = sum(handcount1)
+    #checks to see if the total is 21 and determen if the ace should be counted as a 11 or 1 on the first hand
+    if total1 >= 21:
+        return(f"busted with a total of {total1}")
+    if 1 in handcount1 and total1 < 21:
+        handcount1.remove(1)
+        handcount1.append(11)
+        total1 = sum(handcount1)  
+    if 11 in handcount1 and total1 >= 21:
+        handcount1.remove(11)
+        handcount1.append(1)
+        total1 = sum(handcount1)  
+    if total1 >= 21:
+        return(f"busted with a total of {total1}")
+    else:    
+        
+        x = random.randrange(0,13)
+        hand = cards[x]
+        handcount1.append(hand)
+        hand2 = cards_hand[x]
+        handview1.append(hand2)
+        y = random.randrange(0,3)
+        hand_suit = suits[y]
+        handview1.append(hand_suit)
+        total_1 = sum(handcount1)
+        print("your cards in 1st hand are", ' '.join(handview1), f'for a total of {total_1}')
+        ask = input("hit agine? type hit or stand: ")
+        
+        if ask == "hit":
+            hand_1()
+#this hits for hand 2    
+def hand_2():
+    total2 = sum(handcount2)
+    if 1 in handcount2 and total2 < 21:
+        handcount2.remove(1)
+        handcount2.append(11)
+        total2 =sum(handcount2)
+    if 11 in handcount2 and total2 >= 21:
+        handcount2.remove(11)
+        handcount2.append(1)
+        total2 = sum(handcount2)    
+    if total2 >= 21:
+        print(f"busted with a total of {total2}")
+        return" "
+    else:
+        x = random.randrange(0,13)
+        hand = cards[x]
+        handcount2.append(hand)
+        hand2 = cards_hand[x]
+        handview2.append(hand2)
+        y = random.randrange(0,3)
+        hand_suit = suits[y]
+        handview2.append(hand_suit)
+        total2 = sum(handcount2)
+        print("your cards in 2nd hand are", ' '.join(handview2), f'for a total of {total2}')
+        ask = input("hit agine? type hit or stand: ")
+    
+    if ask == "hit":
+        hand_2()
+#this switches the top cards
+def switch():
+    total1 = sum(handcount1)
+    total2 = sum(handcount2)
+    x = handview1[0]
+    xx = handcount1[0]
+    xxx1 = handview1[1]
+    xxx3 = handview1[3]
+    y = handcount2[0]
+    yy = handview2[0]
+    yyy1 = handview2[1]
+    yyy3 = handview2[3]
+    handview1[0] = yy
+    handcount1[0] = y
+    handcount2[0] = xx
+    handview2[0] = x
+    handview1[1] = yyy1
+    handview1[3]= yyy3
+    handview2[1] = xxx1
+    handview2[3] = xxx3
+    total1 = sum(handcount1)
+    total2 = sum(handcount2)
+    print("\n\nyour cards in hand #1 are now",' '.join(handview1),f'for a total of {total1}','\nand in hand #2'," ".join(handview2), f'for a total of {total2}')
+#this is when the dealer detirmins if the dealer needs to hit or if they stay, also sees if the player wins and gives them the winings 
+def dealers_turn(bet):
+    debug
+    
+    total1 = sum(handcount1)
+    total2 = sum(handcount2)
+    
+    
+    winning1 = 0
+    winning2 = 0
+    losses1 = 0
+    losses2 = 0
+    
+    
+    dealersTotmod = sum(handcount_dealer)
+    
+    print(f"dealers cards are {dealersTotmod}")
+    time.sleep(2)
+    
+    dealbust =  dealersTotmod > 21   
+    hand1bust = total1 >= 22
+    hand2bust = total2 >= 22
+    
+    if total1 > dealersTotmod and hand1bust==False or dealbust == True:
+        winning1 = bet * 2
+    if total2 > dealersTotmod and hand2bust==False or dealbust == True:
+        winning2 = bet * 2
+    if total1 > 21:
+        winning1 = bet * 0
+        losses1 = bet
+    if total2 > 21:
+        winning2 = bet * 0
+        losses2 = bet
+    if total1 < dealersTotmod and dealbust == False:
+        losses1 = bet
+    if total2 < dealersTotmod and dealbust == False:
+        losses1 = bet
+    totlosses = losses2 + losses1
+    totwinning = (winning1 + winning2) - totlosses
+    
+    print(f"your total winnings are {totwinning}")
+    
+    fr = open('player.txt', 'r')
+    fro = fr.readlines()
+    name = fro[0]
+    cash = fro[1]
+
+    cashint = float(cash)
+    addwinning = cashint + totwinning
+
+    fr.close
+    fr2 = open('player.txt', 'w')
+    fr2.write(f'{name}{addwinning}')
+    fr2.close
+#this appends the dealers hand to make the hand >=17
+def hitdealer(bet):
+    
+    
+    
+    dealertot = sum(handcount_dealer)
+    if dealertot <= 17:
+        if 1 in handcount_dealer and dealertot < 21:
+            handcount_dealer.remove(1)
+            handcount_dealer.append(11)
+            dealertot =sum(handcount_dealer)
+        if 11 in handcount_dealer and dealertot >= 21:
+            handcount_dealer.remove(11)
+            handcount_dealer.append(1)
+            dealertot = sum(handcount_dealer)
+        x = random.randrange(0,13)
+        hand = cards[x]
+        handcount_dealer.append(hand)
+        hand2 = cards_hand[x]
+        handview_dealer.append(hand2)
+        y = random.randrange(0,3)
+        hand_suit = suits[y]
+        handview_dealer.append(hand_suit)
+        dealertot = sum(handcount_dealer)
+        hitdealer(bet)
+    else:
+        dealers_turn(bet)  
+#this starts the file at first. the player.txt has the name an cash the player has. if the file dosnt exist it creats one for you
 def main():
   file_exists = os.path.exists('player.txt')
   if file_exists == False:
      f = open("player.txt", "w")
      x = input("please enter your name: ") 
-     f.write(f'{x}\n1\n0/100')
+     f.write(f'{x}\n100')
      f.close()
      fn = open('player.txt', 'r')
      fnr=fn.readlines()
@@ -45,91 +217,136 @@ def main():
     name = fro[0]
     q = input(f'\nhello {name}would you to play?\n(type y or yes): ')
     if q == 'y' or q == "yes":
-        handstart()
+        betting()
     else:
         main()
-
-def handstart():
+#player bets here based off how much money is in the file
+def betting():
+    fr = open('player.txt', 'r')
+    fro = fr.readlines()
+    money = fro[1]
+    moneyint = float(money)
+    
+    moneyMain = moneyint
+    q = float(input("how much would you like to bet?: "))
+    if q > moneyMain:
+        q = moneyMain
+    bet = q / 2
+    print(bet)
+    handstart(bet)
+#starts the hand
+def handstart(bet):
     
     for d in range(2):
         dx = random.randrange(0,13)
         hand_dealer = cards[dx]
         handcount_dealer.append(hand_dealer)
         hand2_dealer = cards_hand[dx]
-        handview.append(hand2_dealer)
+        handview_dealer.append(hand2_dealer)
         dy = random.randrange(0,3)
         hand_suit = suits[dy]
-        handview.append(hand_suit)
+        handview_dealer.append(hand_suit)
     
-    
+    for iy in range(2):
+        x = random.randrange(0,13)
+        handy = cards[x]
+        handcount2.append(handy)
+        handy2 = cards_hand[x]
+        handview2.append(handy2)
+        y = random.randrange(0,3)
+        handy_suit = suits[y]
+        handview2.append(handy_suit)
+        
     i = 1
     while i <= 2:
         #this part assiens the starting hand by getting a random int and matching it to the suits, cards and card hand lists 2 times
         x = random.randrange(0,13)
         hand = cards[x]
-        handcount.append(hand)
+        handcount1.append(hand)
         hand2 = cards_hand[x]
-        handview.append(hand2)
+        handview1.append(hand2)
         y = random.randrange(0,3)
         hand_suit = suits[y]
-        handview.append(hand_suit)
+        handview1.append(hand_suit)
         i += 1
-    switch()
-   
-   def switch():
-       print(handview)
-  #displays cards to user
-      sw = str(input("Would you like to switch your top cards? Enter 'y' for yes and 'n' for no.))
-  #asks user if they'd like to switch cards
-      if sw = 'y':
-         x,y = y,x
-         action()
-  #yes - switches x and y 
-      else:
-        action()
-  #no - user continues on as normal
+    action(bet)
+#this is where the player is asked what they want to do and will call back to a diffrent modual if they request
+def action(bet):
+    total1 = sum(handcount1)
+    total2 = sum(handcount2)  
+    deal_total = sum(handcount_dealer)
+    #does the same for the second hand
+    if deal_total == 21:
+        dealers_turn()
+    
+    
+    
+    
+    if 1 in handcount1 and total1 < 21:
+        handcount1.remove(1)
+        handcount1.append(11)
+        total1 = sum(handcount1)  
+    if 11 in handcount1 and total1 > 21:
+        handcount1.remove(11)
+        handcount1.append(1)
+        total1 = sum(handcount1)  
+    if 1 in handcount2 and total2 < 21:
+        handcount2.remove(1)
+        handcount2.append(11)
+        total2 = sum(handcount2)
+    if 11 in handcount2 and total2 > 21:
+        handcount2.remove(11)
+        handcount2.append(1)
+        total2 = sum(handcount2)    
+    
+        
 
-def action():
-    total = math.fsum(handcount)  
-    #checks to see if the total is 21 and determen if the ace should be counted as a 11 or 1
-    if 1 in handcount and total < 21:
-        handcount.remove(1)
-        handcount.append(11)
-        total = math.fsum(handcount)  
-    if 11 in handcount and total >= 21:
-        handcount.remove(11)
-        handcount.append(1)
-        total = math.fsum(handcount)  
-        
-        
-    #checks if the total is 21 or over to  see if its a bust or black jack
-    if total > 21:
-        print("\nyour cards are", ' '.join(handview), f'for a total of {total}')
-        print('sorry thats bust\n')
-        handview.clear()
-        handcount.clear()
-        handstart()  
-    if total == 21:
-        print("\nyour cards are", ' '.join(handview), f'for a total of {total}')
-        print('BlackJack!\n')
-        handview.clear()
-        handcount.clear()
-        handstart() 
+
+
     
     
-    print("your cards are", ' '.join(handview), f'for a total of {total}')
+    #debugger remove in final version
+
+    print("this is the debugger", handview1, handview2, handcount_dealer,bet, '\n\n\n\n')    
+
+
+    print(f'dealers cards', ' '.join(handview_dealer), f'totaling {deal_total}\n\n')
+    print("your cards in first hand are", ' '.join(handview1), f'for a total of {total1}')
+    print('\nin your second hand you have a', ' '.join(handview2),f'for a total of {total2}')
     #this askes if you want to hit and if you type hit it adds a new card then starts the funtion agine to see if over or == 21
-    hit = input('\nwould you like to hit or stand? ')
-    if hit == "hit":
-        x = random.randrange(0,13)
-        hand = cards[x]
-        handcount.append(hand)
-        hand2 = cards_hand[x]
-        handview.append(hand2)
-        y = random.randrange(0,3)
-        hand_suit = suits[y]
-        handview.append(hand_suit)
-    action()
+    switchQ=input("\nwould you like to switch your top cards? (type yes or y): ")
+    if switchQ == "yes" or switchQ == "y":
+        switch()
+    
+    
+    question = input('\nwould you like to hit or stand on hand 1?(type hit to hit, else just type no): ')
+    if question == "hit":
+        hand_1()
+    total1 = sum(handcount1)
+    if total1 > 21:
+        print(f"busted with a total of {total1}")
+    total2 = sum(handcount2)
+    print("your cards in 2nd hand are", ' '.join(handview2), f'for a total of {total2}')
+    townd_question = input('\nwould you like to hit or stand on hand 2(type hit to hit, else just type no): ')
+    if townd_question == "hit":
+        hand_2()
+    total2 = sum(handcount2)
+    if total2 > 21:
+        print(f"busted with a total of {total1}")
+    print("now its the dealers turn: ")
+    
+    hitdealer(bet)
+    
+    again = input('would you like to play again?(type yes or y): ')
+    if again == 'y' or again == "yes":
+        handcount2.clear()
+        handcount1.clear()
+        handcount_dealer.clear()
+        handview2.clear()
+        handview1.clear()
+        handview_dealer.clear()
+        betting()
+    
     
     
 main()
