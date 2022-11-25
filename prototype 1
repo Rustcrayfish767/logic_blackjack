@@ -207,7 +207,7 @@ def main():
      name_new = fnr[0]
      q2 =input(f'\nhello {name_new}would you like to play\n(type y or yes)')
      if q2 == 'y' or q == "yes":
-        handstart()
+        betting()
      else:
         main()
  
