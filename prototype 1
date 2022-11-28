@@ -1,5 +1,4 @@
-
-#last updated 12:00 nov 24
+#last updated 01:05 nov 28
 
 #too do list 
 #make the "split and double down features"
@@ -26,7 +25,7 @@ handcount_dealer = []
 
     #debugger remove in final version
 
-debug = print("this is the debugger", handview1, handview2, handcount_dealer, '\n\n\n\n')    
+#debug = print("this is the debugger", handview1, handview2, handcount_dealer, '\n\n\n\n')    
 #this hits for hand 1
 def hand_1():
     
@@ -115,7 +114,7 @@ def switch():
     print("\n\nyour cards in hand #1 are now",' '.join(handview1),f'for a total of {total1}','\nand in hand #2'," ".join(handview2), f'for a total of {total2}')
 #this is when the dealer detirmins if the dealer needs to hit or if they stay, also sees if the player wins and gives them the winings 
 def dealers_turn(bet):
-    debug
+    #debug
     
     total1 = sum(handcount1)
     total2 = sum(handcount2)
@@ -269,7 +268,13 @@ def handstart(bet):
         hand_suit = suits[y]
         handview1.append(hand_suit)
         i += 1
-    action(bet)
+    
+    #print("this is the debugger", handview1, handview2, handcount_dealer, '\n\n\n\n') 
+    ask = input("would you like to switch the dealers hand for yours(yes or no, this will triple your bet): ")
+    if ask == "y" or ask == "yes":
+        bon(bet)
+    else:
+        action(bet)    
 #this is where the player is asked what they want to do and will call back to a diffrent modual if they request
 def action(bet):
     total1 = sum(handcount1)
@@ -307,7 +312,7 @@ def action(bet):
     
     #debugger remove in final version
 
-    print("this is the debugger", handview1, handview2, handcount_dealer,bet, '\n\n\n\n')    
+    #print("this is the debugger", handview1, handview2, handcount_dealer,bet, '\n\n\n\n')    
 
 
     print(f'dealers cards', ' '.join(handview_dealer), f'totaling {deal_total}\n\n')
@@ -347,6 +352,36 @@ def action(bet):
         handview_dealer.clear()
         betting()
     
+def bon(bet):
+    print("switching dealers cards for yours: ")
     
+    bet = bet * 3
+    x = handview1[0]
+    xx = handview1[1]
+    xxx1 = handview1[2]
+    xxx3 = handview1[3]
+    xxc = handcount1[0]
+    xxxc = handcount1[1]
+    y = handview_dealer[0]
+    yy = handview_dealer[1]
+    yyy = handview_dealer[2]
+    yyyy = handview_dealer[3]
+    yyc = handcount_dealer[0]
+    yyyc = handcount_dealer[1]
+    handview1[0] = y 
+    handview1[1] = yy
+    handview1[2] = yyy
+    handview1[3] = yyyy
+    handcount1[0] = yyc
+    handcount1[1] = yyyc
     
+    handcount_dealer[0] = xxc
+    handcount_dealer[1] = xxxc
+
+    handview_dealer[0] = x
+    handview_dealer[1] = xx
+    handview_dealer[2] = xxx1
+    handview_dealer[3] = xxx3
+    action(bet)
+
 main()
